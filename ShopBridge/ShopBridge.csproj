@@ -174,11 +174,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_ViewStart.cshtml" />
-    <Content Include="Views\SalesOld\Create.cshtml" />
-    <Content Include="Views\SalesOld\Delete.cshtml" />
-    <Content Include="Views\SalesOld\Details.cshtml" />
-    <Content Include="Views\SalesOld\Edit.cshtml" />
-    <Content Include="Views\SalesOld\Index.cshtml" />
     <Content Include="Views\Sales\Create.cshtml" />
     <Content Include="Views\Sales\CreateNew.cshtml" />
     <Content Include="Views\Sales\Delete.cshtml" />

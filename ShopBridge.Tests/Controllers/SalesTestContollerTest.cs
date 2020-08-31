@@ -19,13 +19,13 @@ namespace ShopBridge.Tests.Controllers
     public class SalesTestContollerTest
     {
 
-        //[TestMethod]
-        //public void IndexView()
-        //{
-        //    var salesController = GetItemController(new InmemoryItemRepository());
-        //    ViewResult result = salesController.Index();
-        //    Assert.AreEqual("Index", result.ViewName);
-        //}
+        [TestMethod]
+        public void IndexView()
+        {
+            var salesController = GetItemController(new InmemoryItemRepository());
+            ViewResult result = salesController.Index();
+            Assert.AreEqual("Index", result.ViewName);
+        }
         private static SalesController GetItemController(IItemRepository Itemrepository)
         {
             SalesController Itemcontroller = new SalesController(Itemrepository);
@@ -81,7 +81,7 @@ namespace ShopBridge.Tests.Controllers
             itemcontroller.ModelState.AddModelError("", "mock error message");
             Sale model = GetItemName(1,"", "", 0,null);
             var result = (ViewResult)itemcontroller.Create(model,null);
-            Assert.AreEqual("Create", result.ViewName);
+            Assert.AreEqual("CreateNew", result.ViewName);
         }
 
         /// <summary>  
@@ -97,7 +97,7 @@ namespace ShopBridge.Tests.Controllers
             SalesController controller = GetItemController(itemrepository);
             Sale item = GetItemID();
             var result = (ViewResult)controller.Create(item,null);
-            Assert.AreEqual("Create", result.ViewName);
+            Assert.AreEqual("CreateNew", result.ViewName);
             ModelState modelState = result.ViewData.ModelState[""];
             Assert.IsNotNull(modelState);
             Assert.IsTrue(modelState.Errors.Any());
@@ -121,20 +121,20 @@ namespace ShopBridge.Tests.Controllers
             };
         }
 
-        //[TestMethod]
-        //public void GetAllEmployeeFromRepository()
-        //{
-        //    // Arrange  
-        //    Sale sale1 = GetItemName(1, "Pen", "Pen", 10,null);
-        //    Sale sale2 = GetItemName(2, "Pencil", "Pencil", 10,null);
-        //    InmemoryItemRepository itemrepository = new InmemoryItemRepository();
-        //    itemrepository.Add(sale1);
-        //    itemrepository.Add(sale2);
-        //    var controller = GetItemController(itemrepository);
-        //    var result = controller.Index();
-        //    var datamodel = (IEnumerable<Sale>)result.ViewData.Model;
-        //    CollectionAssert.Contains(datamodel.ToList(), sale1);
-        //    CollectionAssert.Contains(datamodel.ToList(), sale2);
-        //}
+        [TestMethod]
+        public void GetAllEmployeeFromRepository()
+        {
+            // Arrange  
+            Sale sale1 = GetItemName(1, "Pen", "Pen", 10, null);
+            Sale sale2 = GetItemName(2, "Pencil", "Pencil", 10, null);
+            InmemoryItemRepository itemrepository = new InmemoryItemRepository();
+            itemrepository.Add(sale1);
+            itemrepository.Add(sale2);
+            var controller = GetItemController(itemrepository);
+            var result = controller.Index();
+            var datamodel = (IEnumerable<Sale>)result.ViewData.Model;
+            CollectionAssert.Contains(datamodel.ToList(), sale1);
+            CollectionAssert.Contains(datamodel.ToList(), sale2);
+        }
     }
 }

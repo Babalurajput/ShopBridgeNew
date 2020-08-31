@@ -23,10 +23,10 @@ namespace ShopBridge.Controllers
         {
             _repository = repository;
         }
-        // GET: Sales
-        public async Task<ActionResult> Index()
+        public ViewResult Index()
         {
-            return View(await db.Sales.ToListAsync());
+            ViewData["ControllerName"] = this.ToString();
+            return View("Index", _repository.GetAllItem());
         }
 
         // GET: Sales/Details/5
@@ -93,14 +93,14 @@ namespace ShopBridge.Controllers
                     sale.Image = bytes;
                 }
                 ViewBag.strmsg = strmsg;
-                return View("Create", sale);
+                return View("CreateNew", sale);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex);
                 ViewData["CreateError"] = "Unable to create; view innerexception";
             }
-            return View("Create");
+            return View("CreateNew");
         }
         public string FormValidation(Sale sale)
         {
