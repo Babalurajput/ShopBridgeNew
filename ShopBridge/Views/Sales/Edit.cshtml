@@ -1,0 +1,169 @@
+﻿@model ShopBridge.Models.Sale
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<style>
+    .split {
+        height: 100%;
+        width: 50%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .right {
+        right: 0;
+        background-color: white;
+    }
+
+    .centered img {
+        margin-top: 50px;
+        width: 150px;
+        border-radius: 50%;
+    }
+</style>
+
+@using (Html.BeginForm("Edit", "Sales", FormMethod.Post, new { @id = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script type="text/javascript">
+        function validateForm() {
+            debugger
+            if ($("#Name").val() == "" || $("#Name").val() == null) {
+                alert("Enter The Name.");
+                return false;
+            }
+            if ($("#Description").val() == "" || $("#Description").val() == null) {
+                alert("Enter The Description.");
+                return false;
+            }
+            if ($("#Price").val() == "" || $("#Price").val() == null) {
+                alert("Enter the Price.");
+                return false;
+            }
+
+            var file = form.file.value;
+            var reg = /(.*?)\.(jpg|bmp|jpeg|png)$/;
+            if (!file.match(reg)) {
+                alert('Item Image invalid extension..!!');
+                return false;
+            }
+            else {
+                form.submit();
+            }
+        }
+
+        function Validate(event) {
+            debugger
+            var regex = new RegExp("^[0-9a-zA-Z]+$");
+            var key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+            if (!regex.test(key)) {
+                alert("Special Character's are Not Allow!");
+                event.preventDefault();
+                return false;
+            }
+        }
+        //------------------------Price Not enter Special Character's
+        function ValidatePrice(event) {
+            debugger
+            var regex = new RegExp("^[0-9a-zA-Z]+$");
+            var key = String.fromCharCode(event.charCode ? event.which : event.charCode);
+            if (!regex.test(key)) {
+                alert("Special Character's are Not Allow!");
+                event.preventDefault();
+                return false;
+            }
+        }
+        //------------------------------------------------------
+
+        function ShowPreview(input) {
+            if (input.files && input.files[0]) {
+                var ImageDir = new FileReader();
+                ImageDir.onload = function (e) {
+                    $('#impPrev').attr('src', e.target.result);
+                }
+                ImageDir.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#impPrev").change(function () {
+            var val = $("#fileUpload").val();
+            if (!val.match(/(?:gif|jpg|png|bmp|jpeg)$/)) {
+                // inputted file path is not an image of one of the above types
+                alert("inputted file path is not an image!");
+            }
+        });
+        if (input.files && input.files[0]) {
+            var ImageDir = new FileReader();
+            ImageDir.onload = function (e) {
+                $('#impPrev').attr('src', e.target.result);
+            }
+            ImageDir.readAsDataURL(input.files[0]);
+        }
+    </script>
+    <div class="form-horizontal">
+        <h2><b>ITEM MASTER</b></h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Image)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @Id = "Name", @class = "form-control", @onkeypress = "return Validate(event);" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Description, new { @Id = "Description", @class = "form-control", @onkeypress = "return Validate(event);" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Price, "{0:#.#}", new { @type = "number", @class = "form-control", @onkeypress = "return ValidatePrice(event);" })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" /> | @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+    <div class="split right">
+        <div class="centered">
+            <div class="form-horizontal">
+                @{
+                    if (Model.Image != null)
+                    {
+                        string imageBase64 = Convert.ToBase64String(Model.Image);
+                        string imageSrc3 = string.Format("data:image/jpg;base64,{0}", imageBase64);
+                        <img src="@imageSrc3" id="impPrev" Height="200px" />
+                    }
+                    else
+                    {
+                        <img src=" " id="impPrev" Height="200px" />
+                    }
+                }
+                <input type="file" name="file" id="file" style="width: 100%;" onchange="ShowPreview(this)" /> <br />
+            </div>
+            <p>Upload Item Image</p>
+        </div>
+    </div>
+}
+

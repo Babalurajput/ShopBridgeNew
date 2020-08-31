@@ -1,0 +1,85 @@
+﻿@model ShopBridge.Models.Sale
+
+@{
+    ViewBag.Title = "Details";
+}
+<style>
+    .split {
+        height: 100%;
+        width: 50%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .right {
+        right: 0;
+        background-color: white;
+    }
+
+    .centered img {
+        margin-top: 150px;
+        width: 150px;
+        border-radius: 50%;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <div class="form-horizontal">
+        <h2><b>ITEM MASTER</b></h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" }):
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name, new { @class = "form-control" } ) 
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" }):
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Description, new { @class = "form-control" } ) 
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" }):
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Price, new { @class = "form-control" } ) 
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+    <div class="split right">
+        <div class="centered">
+            <div class="form-horizontal">
+                @{
+                    if (Model.Image != null)
+                    {
+                        string imageBase64 = Convert.ToBase64String(Model.Image);
+                        string imageSrc3 = string.Format("data:image/jpg;base64,{0}", imageBase64);
+                        <img src="@imageSrc3" id="impPrev" Height="200px" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
